@@ -5,11 +5,8 @@ $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 . $profileFolder/Get-ChildItemWithColor.ps1
 . $profileFolder/Write-HostWithColor.ps1
 . $profileFolder/prompt.ps1
-. $profileFolder/curl.ps1
 . $profileFolder/Invoke-Sleep.ps1
-. $profileFolder/Copy-Changes.ps1
 . $profileFolder/Compare-Commands.ps1
-. $profileFolder/ps_ini.ps1
 . $profileFolder/Measure-Previous.ps1
 . $profileFolder/Get-Solution.ps1
 . $profileFolder/Open-Solution.ps1
