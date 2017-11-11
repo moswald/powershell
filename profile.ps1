@@ -26,7 +26,7 @@ Import-Module "C:\Program Files (x86)\PowerShell Community Extensions\Pscx3\Pscx
 
 #
 # Posh-Git
-Import-Module $profileFolder/external/posh-git
+Import-Module $profileFolder/external/posh-git/src/posh-git
 Enable-GitColors
 
 #
