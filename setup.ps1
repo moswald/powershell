@@ -3,4 +3,4 @@
 $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 Out-File ~/documents/WindowsPowerShell/profile.ps1 -input ". $profileFolder/profile.ps1"
 
-. ./profile.ps1
+. $profileFolder/profile.ps1
