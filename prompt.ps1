@@ -69,6 +69,11 @@
     Write-HostWithColor "
 $(battery_level)%<fg=$historyIdColor>#$([Math]::Abs($historyId))%<fg=> " -NoNewline
 
+    if ($PSDebugContext) {
+        $debugColor = ?? { $Theme["prompt.dbg"] } { 'Maroon' }
+        Write-Host " [DBG] " -NoNewline -ForegroundColor $debugColor
+    }
+
     # [+] stack level
     if ($stack_level -gt 0)
     {
