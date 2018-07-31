@@ -110,6 +110,8 @@ function touch
     }
 }
 
+$GitPromptSettings.EnableFileStatus = $false
+
 #
 # create the theme dictionary
 $global:Theme = @{}
