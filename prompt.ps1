@@ -1,5 +1,4 @@
-﻿function prompt
-{
+﻿function prompt {
     # error on previous command?
     $err = !$?
 
@@ -11,20 +10,17 @@
 
     # if we're somewhere in my home dir, show '~'
     $cwd = $pwd.Path
-    if ($cwd.StartsWith($home, 1))
-    {
+    if ($cwd.StartsWith($home, 1)) {
         $cwd = "~" + $cwd.SubString($home.Length)
     }
 
     # I prefer '/' to '\'
     $cwd = $cwd.Replace('\', '/')
 
-    function battery_level
-    {
+    function battery_level {
         $battery = Get-WmiObject -Class Win32_Battery
 
-        if ($battery -ne $nul)
-        {
+        if ($battery -ne $nul) {
             $charging = $battery.BatteryStatus -eq 2
             $charge = $battery.EstimatedChargeRemaining
 
@@ -35,8 +31,7 @@
             $chargingColors = ?? { $Theme["prompt.batteryChargingColors"]} { "Yellow", "Green" }
             $glyphColor = $chargingColors[$charging]
             $chargingGlyph = '++'
-            if (!$charging)
-            {
+            if (!$charging) {
                 $chargingGlyph = '--'
             }
 
@@ -54,8 +49,7 @@
         Write-Output '>'
     }
 
-    function git_prompt
-    {
+    function git_prompt {
         $realLASTEXITCODE = $LASTEXITCODE
         Write-VcsStatus 2> $nul
         $global:LASTEXITCODE = $realLASTEXITCODE
@@ -75,8 +69,7 @@ $(battery_level)%<fg=$historyIdColor>#$([Math]::Abs($historyId))%<fg=> " -NoNewl
     }
 
     # [+] stack level
-    if ($stack_level -gt 0)
-    {
+    if ($stack_level -gt 0) {
         $stackColor = ?? { $Theme["prompt.stack"] } { 'Yellow' }
 
         $stack = "+" * (Get-Location -Stack).count
@@ -85,31 +78,25 @@ $(battery_level)%<fg=$historyIdColor>#$([Math]::Abs($historyId))%<fg=> " -NoNewl
 
     # path
     $max_len = ?? { $Theme["prompt.MaxLen"] } { 50 }
-    if ($cwd.length -ge $max_len)
-    {
-        if ($cwd.StartsWith('~'))
-        {
+    if ($cwd.length -ge $max_len) {
+        if ($cwd.StartsWith('~')) {
             $cwd = "~/..." + $cwd.substring($cwd.length - $max_len + 4)
         }
-        else
-        {
+        else {
             $strDrive = $PWD.Drive.name
             $cwd = $strDrive + ":/..." + $cwd.substring($cwd.length - $max_len + 4)
         }
     }
 
-    if (! $cwd.EndsWith('/'))
-    {
+    if (! $cwd.EndsWith('/')) {
         $cwd = $cwd + '/'
     }
 
-    if ($err)
-    {
+    if ($err) {
         $errColor = ?? { $Theme["prompt.error"] } { 'DarkRed' }
         Write-Host -NoNewLine $cwd -Fore $errColor
     }
-    else
-    {
+    else {
         $successColor = ?? { $Theme["prompt.success"] } { 'Green' }
         Write-Host -NoNewLine $cwd -Fore $successColor
     }
