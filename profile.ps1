@@ -11,15 +11,6 @@ $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 . $profileFolder/Get-Solution.ps1
 . $profileFolder/Open-Solution.ps1
 
-# load any scripts found in untracked folder "local"
-if (Test-Path  $profileFolder/local)
-{
-    foreach ($script in (Get-ChildItem  $profileFolder/local/*.ps1))
-    {
-        . $script
-    }
-}
-
 # load the scripts in the GitHelpers folder
 if (Test-Path $profileFolder/GitHelpers) {
     foreach ($script in (Get-ChildItem  $profileFolder/GitHelpers/*.ps1)) {
@@ -72,40 +63,32 @@ set-alias sln Open-Solution
 set-alias gsln Get-Solution
 
 # functions unsuitable for aliases
-function cd~
-{
+function cd~ {
     Set-LocationEx ~
 }
 
-function cd..
-{
+function cd.. {
     Set-LocationEx ..
 }
 
-function cd...
-{
+function cd... {
     Set-LocationEx ...
 }
 
-function cd....
-{
+function cd.... {
     Set-LocationEx ....
 }
 
-function touch
-{
+function touch {
     param(
-        [Parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [string]$path
     )
 
-    $test = Test-Path $path
-    if ($test)
-    {
+    if (Test-Path $path) {
         Set-FileTime $path
     }
-    else
-    {
+    else {
         Set-Content -Path $path -Value $null
     }
 }
@@ -115,3 +98,10 @@ $GitPromptSettings.EnableFileStatus = $false
 #
 # create the theme dictionary
 $global:Theme = @{}
+
+# recursively search the untracked folder "plugins" for install.ps1
+if (Test-Path  $profileFolder/plugins) {
+    foreach ($script in (Get-ChildItem -Recurse -Include install.ps1 $profileFolder/plugins)) {
+        . $script
+    }
+}
