@@ -20,6 +20,13 @@ if (Test-Path  $profileFolder/local)
     }
 }
 
+# load the scripts in the GitHelpers folder
+if (Test-Path $profileFolder/GitHelpers) {
+    foreach ($script in (Get-ChildItem  $profileFolder/GitHelpers/*.ps1)) {
+        . $script
+    }
+}
+
 #
 # PowerShell Community eXtensions
 Import-Module "C:\Program Files (x86)\PowerShell Community Extensions\Pscx3\Pscx" -arg ~/.ps/.pscx.preferences.ps1
