@@ -12,6 +12,7 @@ $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 . $profileFolder/Open-Solution.ps1
 
 # load the scripts in the GitHelpers folder
+# todo: turn into a plugin
 if (Test-Path $profileFolder/GitHelpers) {
     foreach ($script in (Get-ChildItem  $profileFolder/GitHelpers/*.ps1)) {
         . $script
@@ -98,6 +99,13 @@ $GitPromptSettings.EnableFileStatus = $false
 #
 # create the theme dictionary
 $global:Theme = @{}
+
+#
+# the prompt will replace any path strings with these pretty names
+# initially created with just the user's home path
+$global:PromptPathReplacements = @{
+    $home.Replace('\', '/') = "~"
+}
 
 # recursively search the untracked folder "plugins" for install.ps1
 if (Test-Path  $profileFolder/plugins) {

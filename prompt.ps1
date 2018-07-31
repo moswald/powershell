@@ -1,107 +1,137 @@
-﻿function prompt {
-    # error on previous command?
-    $err = !$?
+﻿function Get-BatteryLevelPromptString {
+    $battery = Get-WmiObject -Class Win32_Battery
 
-    # PUSHD stack level prefix
-    $stack_level = (Get-Location -Stack).Count
+    if ($battery -ne $nul) {
+        $charging = $battery.BatteryStatus -eq 2
+        $charge = $battery.EstimatedChargeRemaining
 
-    # current command history id
-    $historyId = $MyInvocation.HistoryId
+        $defaultColors = "Red", "Magenta", "Yellow", "DarkYellow", "DarkCyan", "DarkGreen", "Green"
+        $colors = ?? { $Theme["prompt.batteryColors"] } { $defaultColors }
 
-    # if we're somewhere in my home dir, show '~'
-    $cwd = $pwd.Path
-    if ($cwd.StartsWith($home, 1)) {
-        $cwd = "~" + $cwd.SubString($home.Length)
-    }
-
-    # I prefer '/' to '\'
-    $cwd = $cwd.Replace('\', '/')
-
-    function battery_level {
-        $battery = Get-WmiObject -Class Win32_Battery
-
-        if ($battery -ne $nul) {
-            $charging = $battery.BatteryStatus -eq 2
-            $charge = $battery.EstimatedChargeRemaining
-
-            $defaultColors = "Red", "Magenta", "Yellow", "DarkYellow", "DarkCyan", "DarkGreen", "Green"
-            $colors = ?? { $Theme["prompt.batteryColors"] } { $defaultColors }
-
-            $chargeColor = $colors[[int]($charge / (100 / $colors.Length)) - 1]
-            $chargingColors = ?? { $Theme["prompt.batteryChargingColors"]} { "Yellow", "Green" }
-            $glyphColor = $chargingColors[$charging]
-            $chargingGlyph = '++'
-            if (!$charging) {
-                $chargingGlyph = '--'
-            }
-
-            "[%<fg=$chargeColor>$charge%<fg=$glyphColor>$chargingGlyph%<fg=>] "
-        }
-    }
-
-    function prompt_char {
-        git branch >$nul 2>$nul
-        if ($?) {
-            Write-Output '±'
-            return
+        $chargeColor = $colors[[int]($charge / (100 / $colors.Length)) - 1]
+        $chargingColors = ?? { $Theme["prompt.batteryChargingColors"]} { "Yellow", "Green" }
+        $glyphColor = $chargingColors[$charging]
+        $chargingGlyph = '++'
+        if (!$charging) {
+            $chargingGlyph = '--'
         }
 
-        Write-Output '>'
+        "[%<fg=$chargeColor>$charge%<fg=$glyphColor>$chargingGlyph%<fg=>] "
     }
+}
 
-    function git_prompt {
-        $realLASTEXITCODE = $LASTEXITCODE
-        Write-VcsStatus 2> $nul
-        $global:LASTEXITCODE = $realLASTEXITCODE
-    }
-
-    #
-    # begin output
-    #
-
-    $historyIdColor = ?? { $Theme["prompt.historyId"] } { 'DarkCyan' }
-    Write-HostWithColor "
-$(battery_level)%<fg=$historyIdColor>#$([Math]::Abs($historyId))%<fg=> " -NoNewline
-
+function Get-DebugPromptString {
     if ($PSDebugContext) {
         $debugColor = ?? { $Theme["prompt.dbg"] } { 'Maroon' }
-        Write-Host " [DBG] " -NoNewline -ForegroundColor $debugColor
+        "%<fg=$debugColor>[DBG]%<fg=>"
     }
+}
 
-    # [+] stack level
-    if ($stack_level -gt 0) {
-        $stackColor = ?? { $Theme["prompt.stack"] } { 'Yellow' }
+function Get-GitPromptString {
+    $realLASTEXITCODE = $LASTEXITCODE
+    Write-VcsStatus 2> $nul
+    $global:LASTEXITCODE = $realLASTEXITCODE
+}
 
-        $stack = "+" * (Get-Location -Stack).count
-        Write-Host "[$stack]" -NoNewline -Fore $stackColor
-    }
-
-    # path
-    $max_len = ?? { $Theme["prompt.MaxLen"] } { 50 }
-    if ($cwd.length -ge $max_len) {
-        if ($cwd.StartsWith('~')) {
-            $cwd = "~/..." + $cwd.substring($cwd.length - $max_len + 4)
-        }
-        else {
-            $strDrive = $PWD.Drive.name
-            $cwd = $strDrive + ":/..." + $cwd.substring($cwd.length - $max_len + 4)
-        }
-    }
+function Get-PathPromptString {
+    # swap '/' for '\'
+    $cwd = $pwd.Path.Replace('\', '/')
 
     if (! $cwd.EndsWith('/')) {
         $cwd = $cwd + '/'
     }
 
+    # check for path replacement names
+    $replacementLength = 0
+    $replacement = ""
+    foreach ($r in $global:PromptPathReplacements.GetEnumerator()) {
+        if ($cwd.StartsWith($r.Name, "CurrentCultureIgnoreCase")) {
+            $replacementLength = $r.Name.Length
+            $replacement = $r.Value
+            $cwd = $cwd.SubString($r.Name.Length)
+            break
+        }
+    }
+
+    $maxLength = ?? { $Theme["prompt.MaxLen"] } { 50 }
+    if ($cwd.length -ge $maxLength) {
+        if ($replacementLength -gt 0) {
+            $cwd = "…" + $cwd.SubString($cwd.length - $maxLength + 4)
+        }
+        else {
+            $cwd = $pwd.Drive.Name + ":/…" + $cwd.SubString($cwd.length - $maxLength + 4)
+        }
+    }
+
     if ($err) {
         $errColor = ?? { $Theme["prompt.error"] } { 'DarkRed' }
-        Write-Host -NoNewLine $cwd -Fore $errColor
+        $replacementColor = ?? { $Theme["prompt." + $replacement + ".error"]} { $errColor }
+        "%<fg=$replacementColor>$replacement%<fg=$errColor>$cwd%<fg=>"
     }
     else {
         $successColor = ?? { $Theme["prompt.success"] } { 'Green' }
-        Write-Host -NoNewLine $cwd -Fore $successColor
+        $replacementColor = ?? { $Theme["prompt." + $replacement + ".success"]} { $successColor }
+        "%<fg=$replacementColor>$replacement%<fg=$successColor>$cwd%<fg=>"
+    }
+}
+
+# PUSHD stack level prefix
+function Get-StackLevelPromptString {
+    $stackCount = (Get-Location -Stack).Count
+
+    if ($stackCount -gt 0) {
+        $stackColor = ?? { $Theme["prompt.stack"] } { 'Yellow' }
+
+        $stack = "+" * $stackCount
+        if ($stackCount -gt 5) {
+            $stack = "+($stackCount)"
+        }
+
+        "%<fg=$stackColor>[$stack]%<fg=>"
+    }
+}
+
+function Get-TerminatorPromptChar {
+    git branch >$nul 2>$nul
+    if ($?) {
+        "±"
+    }
+    else {
+        ">"
+    }
+}
+
+function prompt {
+    $batteryLevel = Get-BatteryLevelPromptString
+    $debugPrompt = Get-DebugPromptString
+    $stackLevel = Get-StackLevelPromptString
+    $pathPrompt = Get-PathPromptString
+    $gitPrompt = Get-GitPromptString
+    $terminatorChar = Get-TerminatorPromptChar
+
+    $prompt = $pathPrompt
+
+    if ($stackLevel.Length -gt 0) {
+        $prompt = "$stackLevel $prompt"
     }
 
-    Write-HostWithColor -NoNewLine "$(git_prompt)`n$(prompt_char)".Replace("%<nl>", "`n").Replace("%<a>", "→")
+    if ($debugPrompt.Length -gt 0) {
+        $prompt = "$($debugPrompt.Length) $prompt"
+    }
+
+    if ($batteryLevel.Length -gt 0) {
+        $prompt = "$batteryLevel $prompt"
+    }
+
+    if ($gitPrompt.Length -gt 0) {
+        $prompt = "$prompt$gitPrompt"
+    }
+
+    if ($terminatorChar.Length -gt 0) {
+        $prompt = "$prompt`n$terminatorChar"
+    }
+
+    Write-HostWithColor "`n$prompt" -NoNewline
 
     return " "
 }
