@@ -9,7 +9,7 @@ function Remove-OldFeatureBranches {
     }
 }
 
-function Remove-AllUntracked {
+function Remove-UntrackedBranches {
     Write-Output "Removing old feature branches."
     Remove-OldFeatureBranches
 
@@ -22,5 +22,14 @@ function Remove-AllUntracked {
         if ($response -ceq $branchName) {
             git branch -D $branchName
         }
+    }
+}
+
+function Remove-UntrackedFiles {
+    git clean -ndf
+
+    $response = Read-Host "`nContinue? (y/n) [n]"
+    if ($response -eq "y") {
+        git clean -df
     }
 }
