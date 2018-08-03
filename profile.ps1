@@ -1,3 +1,5 @@
+$PSDefaultParameterValues['*:Encoding'] = 'UTF8'
+
 #
 # loading powershell scripts
 $profileFolder = Split-Path $MyInvocation.MyCommand.Source
