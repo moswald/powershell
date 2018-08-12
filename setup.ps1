@@ -3,4 +3,6 @@
 $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 Out-File ~/documents/WindowsPowerShell/profile.ps1 -input ". $profileFolder/profile.ps1"
 
+Install-Module -Name PowershellHumanizer
+
 . $profileFolder/profile.ps1
