@@ -64,7 +64,7 @@ set-alias sudo Invoke-Elevated
 set-alias psget Install-Module
 set-alias reboot Restart-Computer
 set-alias shutdown Stop-Computer
-set-alias pause Start-Sleep
+set-alias pause Start-SleepEx
 set-alias ping Test-Connection
 set-alias ise Powershell_ISE
 set-alias sln Open-Solution
