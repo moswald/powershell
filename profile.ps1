@@ -12,6 +12,7 @@ $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 . $profileFolder/Measure-Previous.ps1
 . $profileFolder/Get-Solution.ps1
 . $profileFolder/Open-Solution.ps1
+. $profileFolder/Start-SleepEx.ps1
 
 # load the scripts in the GitHelpers folder
 # todo: turn into a plugin
@@ -36,6 +37,10 @@ Set-PSReadlineOption -BellStyle None
 #
 # Azure
 Import-Module Azure
+
+#
+# Humanizer
+Import-Module PowerShellHumanizer
 
 #
 # removing default aliases that I redefine below
