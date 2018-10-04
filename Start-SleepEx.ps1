@@ -16,11 +16,20 @@ function Start-SleepEx {
             ParameterSetName = 'Milliseconds')]
         [Alias("ms")]
         [int]
-        $Milliseconds
+        $Milliseconds,
+        [Parameter(
+            HelpMessage = 'Minutes to sleep',
+            ParameterSetName = 'Minutes')]
+        [Alias("min")]
+        [int]
+        $Minutes
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'Seconds') {
         $Milliseconds = $Seconds * 1000
+    }
+    elseif ($PSCmdlet.ParameterSetName -eq 'Minutes') {
+        $Milliseconds = $Minutes * 60 * 1000
     }
 
     if ($Milliseconds -ge 10000) {
