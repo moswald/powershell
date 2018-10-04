@@ -24,7 +24,7 @@ if (Test-Path $profileFolder/GitHelpers) {
 
 #
 # PowerShell Community eXtensions
-Import-Module "C:\Program Files (x86)\PowerShell Community Extensions\Pscx3\Pscx" -arg ~/.ps/.pscx.preferences.ps1
+Import-Module Pscx -arg ~/.ps/.pscx.preferences.ps1
 
 #
 # Posh-Git
@@ -48,6 +48,7 @@ remove-item alias:ls -force
 remove-item alias:dir -force
 remove-item alias:touch -force
 remove-item alias:ise -force
+remove-item alias:sleep -force
 
 #
 # not redefined, but annoying
@@ -65,6 +66,7 @@ set-alias psget Install-Module
 set-alias reboot Restart-Computer
 set-alias shutdown Stop-Computer
 set-alias pause Start-SleepEx
+set-alias sleep Start-SleepEx
 set-alias ping Test-Connection
 set-alias ise Powershell_ISE
 set-alias sln Open-Solution
