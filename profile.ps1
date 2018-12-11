@@ -71,6 +71,7 @@ set-alias ping Test-Connection
 set-alias ise Powershell_ISE
 set-alias sln Open-Solution
 set-alias gsln Get-Solution
+set-alias nguid New-Guid
 
 # functions unsuitable for aliases
 function cd~ {
@@ -101,6 +102,10 @@ function touch {
     else {
         Set-Content -Path $path -Value $null
     }
+}
+
+function ads {
+    & 'C:\Program Files\Azure Data Studio\azuredatastudio.exe' $args >$nul 2>$nul
 }
 
 $GitPromptSettings.EnableFileStatus = $false
