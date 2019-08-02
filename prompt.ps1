@@ -3,7 +3,7 @@
         [bool]$err
     )
 
-    $battery = Get-WmiObject -Class Win32_Battery
+    $battery = ?: { $global:isPSCore } { $nul } { Get-WmiObject -Class Win32_Battery }
 
     if ($battery -ne $nul) {
         $charging = $battery.BatteryStatus -eq 2
@@ -41,7 +41,7 @@ function Get-GitPromptString {
     )
 
     $realLASTEXITCODE = $LASTEXITCODE
-    Write-VcsStatus 2> $nul
+    Write-VcsStatus #2> $nul
     $global:LASTEXITCODE = $realLASTEXITCODE
 }
 

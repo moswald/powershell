@@ -1,5 +1,7 @@
 $PSDefaultParameterValues['*:Encoding'] = 'UTF8'
 
+$global:isPSCore = $PSVersionTable.PSEdition -eq "Core"
+
 #
 # loading powershell scripts
 $profileFolder = Split-Path $MyInvocation.MyCommand.Source
@@ -36,7 +38,9 @@ Set-PSReadlineOption -BellStyle None
 
 #
 # Azure
-Import-Module Azure
+if (!$isPSCore) {
+    Import-Module Azure
+}
 
 #
 # Humanizer
@@ -47,12 +51,13 @@ Import-Module PowerShellHumanizer
 remove-item alias:ls -force
 remove-item alias:dir -force
 remove-item alias:touch -force
-remove-item alias:ise -force
 remove-item alias:sleep -force
 
 #
 # not redefined, but annoying
-remove-item alias:sc -force
+if (!$isPSCore) {
+    remove-item alias:sc -force
+}
 
 #
 # my own aliases
@@ -68,7 +73,6 @@ set-alias shutdown Stop-Computer
 set-alias pause Start-SleepEx
 set-alias sleep Start-SleepEx
 set-alias ping Test-Connection
-set-alias ise Powershell_ISE
 set-alias sln Open-Solution
 set-alias gsln Get-Solution
 set-alias nguid New-Guid
@@ -112,7 +116,7 @@ $GitPromptSettings.EnableFileStatus = $false
 
 #
 # create the theme dictionary
-$global:Theme = @{}
+$global:Theme = @{ }
 
 #
 # the prompt will replace any path strings with these pretty names
