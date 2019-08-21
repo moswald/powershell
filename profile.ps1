@@ -112,6 +112,10 @@ function ads {
     & 'C:\Program Files\Azure Data Studio\azuredatastudio.exe' $args >$nul 2>$nul
 }
 
+function cppath {
+    (Get-Location).Path | clip
+}
+
 $GitPromptSettings.EnableFileStatus = $false
 
 #
