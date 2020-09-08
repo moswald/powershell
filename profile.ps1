@@ -109,7 +109,7 @@ function touch {
 }
 
 function ads {
-    & 'C:\Program Files\Azure Data Studio\azuredatastudio.exe' $args >$nul 2>$nul
+    & 'C:\Users\maoswald\AppData\Local\Programs\Azure Data Studio\bin\azuredatastudio.cmd' $args >$nul 2>$nul
 }
 
 function cppath {
@@ -127,6 +127,19 @@ $global:Theme = @{ }
 # initially created with just the user's home path
 $global:PromptPathReplacements = @{
     $home.Replace('\', '/') = "~"
+}
+
+$global:Projects = @{
+    Root = 'd:/m/projects/';
+    MS = 'd:/m/projects/MS/';
+}
+
+function cd-projects {
+    cd $global:Projects['Root']
+}
+
+function cd-ms {
+    cd $global:Projects['MS']
 }
 
 # recursively search the untracked folder "plugins" for install.ps1
