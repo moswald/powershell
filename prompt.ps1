@@ -6,6 +6,9 @@
     $battery = ?: { $global:isPSCore } { $nul } { Get-WmiObject -Class Win32_Battery }
 
     if ($battery -ne $nul) {
+        # todo: 6 apparently means charging
+        #       2 only means connected to AC (may not be charging)
+        # see: https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-battery
         $charging = $battery.BatteryStatus -eq 2
         $charge = $battery.EstimatedChargeRemaining
 
