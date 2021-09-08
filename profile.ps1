@@ -142,12 +142,8 @@ function cd-ms {
     cd $global:Projects['MS']
 }
 
-function get-guid {
-    [System.Guid]::NewGuid()
-}
-
 function cpguid {
-    (get-guid).Guid | clip
+    (New-Guid).Guid | clip
 }
 
 # recursively search the untracked folder "plugins" for install.ps1
