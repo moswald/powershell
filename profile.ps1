@@ -1,69 +1,89 @@
 $PSDefaultParameterValues['*:Encoding'] = 'UTF8'
 
 $global:isPSCore = $PSVersionTable.PSEdition -eq "Core"
-
-#
-# loading powershell scripts
 $profileFolder = Split-Path $MyInvocation.MyCommand.Source
 
-. $profileFolder/Get-ChildItemWithColor.ps1
-. $profileFolder/Write-HostWithColor.ps1
-. $profileFolder/prompt.ps1
-. $profileFolder/Invoke-Sleep.ps1
-. $profileFolder/Compare-Commands.ps1
-. $profileFolder/Measure-Previous.ps1
-. $profileFolder/Get-Solution.ps1
-. $profileFolder/Open-Solution.ps1
-. $profileFolder/Start-SleepEx.ps1
-
-# load the scripts in the GitHelpers folder
-# todo: turn into a plugin
-if (Test-Path $profileFolder/GitHelpers) {
-    foreach ($script in (Get-ChildItem  $profileFolder/GitHelpers/*.ps1)) {
-        . $script
-    }
-}
-
 #
-# PowerShell Community eXtensions
-Import-Module Pscx -arg ~/.ps/.pscx.preferences.ps1
-
+##
+## Modules
+##
 #
-# Posh-Git
-Import-Module $profileFolder/external/posh-git/src/posh-git
-
-#
-# PSReadLine
-Set-PSReadlineOption -BellStyle None
-
-#
-# Azure
 if (!$isPSCore) {
-    Import-Module Azure
+    # PowerShell Community eXtensions don't work in the PSCore version
+    Import-Module Pscx -arg ~/.ps/.pscx.preferences.ps1
 }
 
-#
-# Humanizer
+Import-Module Posh-Git
 Import-Module PowerShellHumanizer
 
+if ($isPSCore) {
+    Import-Module Terminal-Icons # usually must go last or gets clobbered 🤷‍♂️
+}
+
 #
+##
+## Custom commands
+##
+#
+. $profileFolder/Commands/Write-HostWithColor.ps1
+. $profileFolder/Commands/Invoke-Sleep.ps1
+. $profileFolder/Commands/Compare-Commands.ps1
+. $profileFolder/Commands/Measure-Previous.ps1
+. $profileFolder/Commands/Get-Solution.ps1
+. $profileFolder/Commands/Open-Solution.ps1
+. $profileFolder/Commands/Start-SleepEx.ps1
+
+if (!$isPSCore) {
+    # PSCore has a better solution for this with module Terminal-Icons
+    . $profileFolder/Commands/Get-ChildItemWithColor.ps1
+}
+
+#
+##
+## Prompt
+##
+#
+if ($isPSCore) {
+    . $profileFolder/Set-OhMyPoshPrompt.ps1
+}
+else {
+    . $profileFolder/prompt.ps1
+}
+
+#
+##
+## Configuration
+##
+#
+
+. $profileFolder/Configure-PSReadLine.ps1
+
+$global:Projects = @{
+    Root = 'd:/m/projects/';
+}
+
 # removing default aliases that I redefine below
 remove-item alias:ls -force
 remove-item alias:dir -force
-remove-item alias:touch -force
 remove-item alias:sleep -force
+remove-item alias:touch -force 2> $null
 
-#
 # not redefined, but annoying
+remove-item alias:sc -force 2> $null
+remove-item alias:sp -force
+
+# my own aliases
 if (!$isPSCore) {
-    remove-item alias:sc -force
+    set-alias l Get-ChildItemWithColor
+    set-alias ls Get-ChildItemWithColor
+    set-alias dir Get-ChildItemWithColor
+}
+else {
+    set-alias l Get-ChildItem
+    set-alias ls Get-ChildItem
+    set-alias dir Get-ChildItem
 }
 
-#
-# my own aliases
-set-alias l Get-ChildItemWithColor
-set-alias ls Get-ChildItemWithColor
-set-alias dir Get-ChildItemWithColor
 set-alias which Get-Command
 set-alias say Out-Speech
 set-alias sudo Invoke-Elevated
@@ -79,19 +99,19 @@ set-alias nguid New-Guid
 
 # functions unsuitable for aliases
 function cd~ {
-    Set-LocationEx ~
+    Set-Location ~
 }
 
 function cd.. {
-    Set-LocationEx ..
+    Set-Location ..
 }
 
 function cd... {
-    Set-LocationEx ...
+    Set-Location ...
 }
 
 function cd.... {
-    Set-LocationEx ....
+    Set-Location ....
 }
 
 function touch {
@@ -109,42 +129,71 @@ function touch {
 }
 
 function ads {
-    & 'C:\Users\maoswald\AppData\Local\Programs\Azure Data Studio\bin\azuredatastudio.cmd' $args >$nul 2>$nul
+    azuredatastudio $args >$nul 2>$nul
 }
 
 function cppath {
     (Get-Location).Path | clip
 }
 
-$GitPromptSettings.EnableFileStatus = $false
-
-#
-# create the theme dictionary
-$global:Theme = @{ }
-
-#
-# the prompt will replace any path strings with these pretty names
-# initially created with just the user's home path
-$global:PromptPathReplacements = @{
-    $home.Replace('\', '/') = "~"
-}
-
-$global:Projects = @{
-    Root = 'd:/m/projects/';
-    MS = 'd:/m/projects/MS/';
-}
-
-function cd-projects {
-    cd $global:Projects['Root']
-}
-
-function cd-ms {
-    cd $global:Projects['MS']
-}
-
 function cpguid {
     (New-Guid).Guid | clip
 }
+
+function cd-projects {
+    Set-Location $global:Projects['Root']
+}
+
+#
+##
+## argument completers
+##
+#
+
+# dotnet
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+    param($commandName, $wordToComplete, $cursorPosition)
+    dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+    }
+}
+
+# winget
+Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+    $Local:word = $wordToComplete.Replace('"', '""')
+    $Local:ast = $commandAst.ToString().Replace('"', '""')
+    winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+    }
+}
+
+#
+##
+## Theme support
+##
+#
+$global:Theme = @{ }
+
+function Get-ThemeValue {
+    param(
+        $themeKey,
+        $defaultValue
+    )
+
+    if ($null -ne $global:Theme[$themeKey]) {
+        $global:Theme[$themeKey];
+    }
+
+    $defaultValue;
+}
+
+#
+##
+## plugins
+##
+#
 
 # recursively search the untracked folder "plugins" for install.ps1
 if (Test-Path  $profileFolder/plugins) {

@@ -1,9 +1,18 @@
-﻿function Get-BatteryLevelPromptString {
+﻿$GitPromptSettings.EnableFileStatus = $false
+
+#
+# the prompt will replace any path strings with these pretty names
+# initially created with just the user's home path
+$global:PromptPathReplacements = @{
+    $home.Replace('\', '/') = "~"
+}
+
+function Get-BatteryLevelPromptString {
     param(
         [bool]$err
     )
 
-    $battery = ?: { $global:isPSCore } { $nul } { Get-WmiObject -Class Win32_Battery }
+    $battery = Get-WmiObject -Class Win32_Battery;
 
     if ($battery -ne $nul) {
         # todo: 6 apparently means charging
@@ -13,10 +22,10 @@
         $charge = $battery.EstimatedChargeRemaining
 
         $defaultColors = "Red", "Magenta", "Yellow", "DarkYellow", "DarkCyan", "DarkGreen", "Green"
-        $colors = ?? { $Theme["prompt.batteryColors"] } { $defaultColors }
+        $colors = Get-ThemeValue "prompt.batteryColors" $defaultColors;
 
         $chargeColor = $colors[[int]($charge / (100 / $colors.Length)) - 1]
-        $chargingColors = ?? { $Theme["prompt.batteryChargingColors"]} { "Yellow", "Green" }
+        $chargingColors = Get-ThemeValue "prompt.batteryChargingColors" ("Yellow", "Green")
         $glyphColor = $chargingColors[$charging]
         $chargingGlyph = '++'
         if (!$charging) {
@@ -33,7 +42,7 @@ function Get-DebugPromptString {
     )
 
     if ($PSDebugContext) {
-        $debugColor = ?? { $Theme["prompt.dbg"] } { 'Maroon' }
+        $debugColor = Get-ThemeValue "prompt.dbg" 'Maroon'
         "%<fg=$debugColor>[DBG]%<fg=>"
     }
 }
@@ -72,7 +81,7 @@ function Get-PathPromptString {
         }
     }
 
-    $maxLength = ?? { $Theme["prompt.MaxLen"] } { 50 }
+    $maxLength = Get-ThemeValue "prompt.MaxLen" 50
     if ($cwd.length -ge $maxLength) {
         if ($replacementLength -gt 0) {
             $cwd = "…" + $cwd.SubString($cwd.length - $maxLength + 4)
@@ -83,13 +92,13 @@ function Get-PathPromptString {
     }
 
     if ($err) {
-        $errColor = ?? { $Theme["prompt.error"] } { 'DarkRed' }
-        $replacementColorFormatter = ?? { $Theme["prompt." + $replacement + ".error"]} { "%<fg=$errColor>" }
+        $errColor = Get-ThemeValue "prompt.error" 'DarkRed'
+        $replacementColorFormatter = Get-ThemeValue "prompt.$replacement.error" "%<fg=$errColor>"
         "$replacementColorFormatter$replacement%<bg=>%<fg=$errColor>$cwd%<fg=>"
     }
     else {
-        $successColor = ?? { $Theme["prompt.success"] } { 'Green' }
-        $replacementColorFormatter = ?? { $Theme["prompt." + $replacement + ".success"]} { "%<fg=$successColor>" }
+        $successColor = Get-ThemeValue "prompt.success" 'Green'
+        $replacementColorFormatter = Get-ThemeValue "prompt.$replacement.success" "%<fg=$successColor>"
         "$replacementColorFormatter$replacement%<bg=>%<fg=$successColor>$cwd%<fg=>"
     }
 }
@@ -103,7 +112,7 @@ function Get-StackLevelPromptString {
     $stackCount = (Get-Location -Stack).Count
 
     if ($stackCount -gt 0) {
-        $stackColor = ?? { $Theme["prompt.stack"] } { 'Yellow' }
+        $stackColor = Get-ThemeValue "prompt.stack" 'Yellow'
 
         $stack = "+" * $stackCount
         if ($stackCount -gt 5) {

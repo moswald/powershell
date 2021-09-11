@@ -1,0 +1,186 @@
+{
+    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "blocks": [
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "type": "text",
+                    "style": "diamond",
+                    "leading_diamond": "╭─",
+                    "background": "#26C6DA",
+                    "foreground": "transparent",
+                    "properties": {
+                        "text": "",
+                        "prefix": "",
+                        "postfix": ""
+                    }
+                },
+                {
+                    "type": "os",
+                    "style": "plain",
+                    "foreground": "#26C6DA",
+                    "background": "transparent",
+                    "properties": {
+                        "prefix": ""
+                    }
+                },
+                {
+                    "type": "root",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "background": "transparent",
+                    "foreground": "#FC951E",
+                    "properties": {
+                        "root_icon": ""
+                    }
+                },
+                {
+                    "type": "text",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "foreground": "transparent",
+                    "background": "#A5C25C",
+                    "properties": {
+                        "prefix": "[",
+                        "postfix": "]",
+                        "include_folders": [
+                            "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+                        ],
+                        "text": " ADO "
+                    }
+                },
+                {
+                    "type": "path",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "foreground": "transparent",
+                    "background": "#A5C25C",
+                    "properties": {
+                        "prefix": "",
+                        "postfix": "",
+                        "folder_separator_icon": " ⁍ ",
+                        "style": "agnoster_short",
+                        "max_depth": 5,
+                        "include_folders": [
+                            "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+                        ],
+                        "mapped_locations": {
+                            "D:\\m\\projects\\MS\\ado": ""
+                        }
+                    }
+                },
+                {
+                    "type": "path",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "foreground": "transparent",
+                    "background": "#A5C25C",
+                    "properties": {
+                        "prefix": " ",
+                        "postfix": "",
+                        "folder_separator_icon": " ⁍ ",
+                        "style": "agnoster_short",
+                        "max_depth": 5,
+                        "exclude_folders": [
+                            "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+                        ],
+                        "mapped_locations": {
+                            "D:\\m\\projects\\MS": "~MS",
+                            "D:\\m\\projects\\SP": "~SP",
+                            "D:\\m\\projects\\MS\\ado": "[ ADO ]"
+                        }
+                    }
+                },
+                {
+                    "type": "git",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "foreground": "transparent",
+                    "background": "#67D9F0"
+                },
+                {
+                    "type": "exit",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "foreground": "#ffffff",
+                    "background": "#FA2573"
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "right",
+            "segments": [
+                {
+                    "type": "envvar",
+                    "style": "diamond",
+                    "leading_diamond": "",
+                    "trailing_diamond": "",
+                    "foreground": "transparent",
+                    "background": "#008080",
+                    "properties": {
+                        "var_name": "MEASURE_PREVIOUS"
+                    }
+                },
+                {
+                    "type": "text",
+                    "style": "diamond",
+                    "background": "#26C6DA",
+                    "foreground": "transparent",
+                    "trailing_diamond": "─╮",
+                    "properties": {
+                        "text": "",
+                        "prefix": "",
+                        "postfix": ""
+                    }
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "type": "text",
+                    "style": "diamond",
+                    "leading_diamond": "╰─",
+                    "background": "#26C6DA",
+                    "foreground": "transparent",
+                    "properties": {
+                        "text": "",
+                        "prefix": "",
+                        "postfix": ""
+                    }
+                }
+            ]
+        },
+        {
+            "type": "rprompt",
+            "segments": [
+                {
+                    "type": "text",
+                    "style": "diamond",
+                    "background": "#26C6DA",
+                    "foreground": "transparent",
+                    "trailing_diamond": "─╯",
+                    "properties": {
+                        "text": "",
+                        "prefix": "",
+                        "postfix": ""
+                    }
+                }
+            ]
+        }
+    ],
+    "final_space": true
+}
