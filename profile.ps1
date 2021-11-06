@@ -107,11 +107,15 @@ function cd.. {
 }
 
 function cd... {
-    Set-Location ...
+    Set-Location ../..
 }
 
 function cd.... {
-    Set-Location ....
+    Set-Location ../../..
+}
+
+function cd..... {
+    Set-Location ../../../..
 }
 
 function touch {
