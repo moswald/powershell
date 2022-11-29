@@ -1,4 +1,6 @@
-﻿$GitPromptSettings.EnableFileStatus = $false
+﻿if ($null -ne $GitPromptSettings) {
+    $GitPromptSettings.EnableFileStatus = $false
+}
 
 #
 # the prompt will replace any path strings with these pretty names
