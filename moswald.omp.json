@@ -1,186 +1,165 @@
 {
-    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-    "blocks": [
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 2,
+  "final_space": true,
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
         {
-            "type": "prompt",
-            "alignment": "left",
-            "newline": true,
-            "segments": [
-                {
-                    "type": "text",
-                    "style": "diamond",
-                    "leading_diamond": "╭─",
-                    "background": "#26C6DA",
-                    "foreground": "transparent",
-                    "properties": {
-                        "text": "",
-                        "prefix": "",
-                        "postfix": ""
-                    }
-                },
-                {
-                    "type": "os",
-                    "style": "plain",
-                    "foreground": "#26C6DA",
-                    "background": "transparent",
-                    "properties": {
-                        "prefix": ""
-                    }
-                },
-                {
-                    "type": "root",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "background": "transparent",
-                    "foreground": "#FC951E",
-                    "properties": {
-                        "root_icon": ""
-                    }
-                },
-                {
-                    "type": "text",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "foreground": "transparent",
-                    "background": "#A5C25C",
-                    "properties": {
-                        "prefix": "[",
-                        "postfix": "]",
-                        "include_folders": [
-                            "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
-                        ],
-                        "text": " ADO "
-                    }
-                },
-                {
-                    "type": "path",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "foreground": "transparent",
-                    "background": "#A5C25C",
-                    "properties": {
-                        "prefix": "",
-                        "postfix": "",
-                        "folder_separator_icon": " ⁍ ",
-                        "style": "agnoster_short",
-                        "max_depth": 5,
-                        "include_folders": [
-                            "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
-                        ],
-                        "mapped_locations": {
-                            "D:\\m\\projects\\MS\\ado": ""
-                        }
-                    }
-                },
-                {
-                    "type": "path",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "foreground": "transparent",
-                    "background": "#A5C25C",
-                    "properties": {
-                        "prefix": " ",
-                        "postfix": "",
-                        "folder_separator_icon": " ⁍ ",
-                        "style": "agnoster_short",
-                        "max_depth": 5,
-                        "exclude_folders": [
-                            "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
-                        ],
-                        "mapped_locations": {
-                            "D:\\m\\projects\\MS": "~MS",
-                            "D:\\m\\projects\\SP": "~SP",
-                            "D:\\m\\projects\\MS\\ado": "[ ADO ]"
-                        }
-                    }
-                },
-                {
-                    "type": "git",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "foreground": "transparent",
-                    "background": "#67D9F0"
-                },
-                {
-                    "type": "exit",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "foreground": "#ffffff",
-                    "background": "#FA2573"
-                }
-            ]
+          "alias": "leading bubble",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#26C6DA",
+          "leading_diamond": "╭─",
+          "template": "<#26C6DA,transparent></>"
         },
         {
-            "type": "prompt",
-            "alignment": "right",
-            "segments": [
-                {
-                    "type": "envvar",
-                    "style": "diamond",
-                    "leading_diamond": "",
-                    "trailing_diamond": "",
-                    "foreground": "transparent",
-                    "background": "#008080",
-                    "properties": {
-                        "var_name": "MEASURE_PREVIOUS"
-                    }
-                },
-                {
-                    "type": "text",
-                    "style": "diamond",
-                    "background": "#26C6DA",
-                    "foreground": "transparent",
-                    "trailing_diamond": "─╮",
-                    "properties": {
-                        "text": "",
-                        "prefix": "",
-                        "postfix": ""
-                    }
-                }
-            ]
+          "alias": "os icon",
+          "type": "os",
+          "style": "plain",
+          "foreground": "#26C6DA",
+          "background": "transparent",
+          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}}"
         },
         {
-            "type": "prompt",
-            "alignment": "left",
-            "newline": true,
-            "segments": [
-                {
-                    "type": "text",
-                    "style": "diamond",
-                    "leading_diamond": "╰─",
-                    "background": "#26C6DA",
-                    "foreground": "transparent",
-                    "properties": {
-                        "text": "",
-                        "prefix": "",
-                        "postfix": ""
-                    }
-                }
-            ]
+          "alias": "running as root?",
+          "type": "root",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#26C6DA",
+          "trailing_diamond": "",
+          "template": "<#FC951E,transparent>  </>"
         },
         {
-            "type": "rprompt",
-            "segments": [
-                {
-                    "type": "text",
-                    "style": "diamond",
-                    "background": "#26C6DA",
-                    "foreground": "transparent",
-                    "trailing_diamond": "─╯",
-                    "properties": {
-                        "text": "",
-                        "prefix": "",
-                        "postfix": ""
-                    }
-                }
+          "alias": "show [ADO] segment if in ADO subfolder",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#A5C25C",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "[ADO]",
+          "properties": {
+            "include_folders": [
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
             ]
+          }
+        },
+        {
+          "alias": "current path",
+          "type": "path",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#A5C25C",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "{{ .Path }}",
+          "properties": {
+            "folder_separator_icon": " ⁍ ",
+            "include_folders": [
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+            ],
+            "mapped_locations": {
+              "D:\\m\\projects\\MS\\ado": "",
+              "D:\\m\\projects\\MS\\ado.configchange": "configchange"
+            },
+            "max_depth": 5,
+            "style": "agnoster_short"
+          }
+        },
+        {
+          "alias": "special paths",
+          "type": "path",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#A5C25C",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "\ue5ff {{ .Path }}",
+          "properties": {
+            "exclude_folders": [
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+            ],
+            "folder_separator_icon": " ⁍ ",
+            "mapped_locations": {
+              "D:\\m\\projects\\MS": "~MS",
+              "D:\\m\\projects\\MS\\ado": "[ADO]",
+              "D:\\m\\projects\\SP": "~SP"
+            },
+            "max_depth": 5,
+            "style": "agnoster_short"
+          }
+        },
+        {
+          "alias": "git properties",
+          "type": "git",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#67D9F0",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": " {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} "
+        },
+        {
+          "alias": "exit code if failed",
+          "type": "exit",
+          "style": "diamond",
+          "foreground": "#ffffff",
+          "background": "#FA2573",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "{{ if gt .Code 0 }}  {{ .Meaning }}  {{ else }}  {{ end }}"
         }
-    ],
-    "final_space": true
+      ],
+      "newline": true
+    },
+    {
+      "type": "prompt",
+      "alignment": "right",
+      "segments": [
+        {
+          "alias": "right-aligned previous command timing",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#008080",
+          "leading_diamond": "",
+          "trailing_diamond": "<#26c6da,>─╮</>",
+          "template": "{{ .Env.MEASURE_PREVIOUS }}"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "alias": "prompt prefix",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#26C6DA",
+          "leading_diamond": "╰─",
+          "template": "<transparent,transparent> </>"
+        }
+      ],
+      "newline": true
+    },
+    {
+      "type": "rprompt",
+      "segments": [
+        {
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#26C6DA",
+          "trailing_diamond": "─╯",
+          "template": "<transparent,transparent> </>"
+        }
+      ]
+    }
+  ]
 }
