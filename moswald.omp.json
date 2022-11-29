@@ -14,15 +14,16 @@
           "foreground": "transparent",
           "background": "#26C6DA",
           "leading_diamond": "╭─",
-          "template": "<#26C6DA,transparent></>"
+          "template": "<,></>"
         },
         {
           "alias": "os icon",
           "type": "os",
-          "style": "plain",
-          "foreground": "#26C6DA",
-          "background": "transparent",
-          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}}"
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#26C6DA",
+          "leading_diamond": "",
+          "template": "<#26C6DA,transparent> {{ if .WSL }}WSL at {{ end }}{{.Icon}}</>"
         },
         {
           "alias": "running as root?",
@@ -127,8 +128,17 @@
           "foreground": "transparent",
           "background": "#008080",
           "leading_diamond": "",
-          "trailing_diamond": "<#26c6da,>─╮</>",
+          "trailing_diamond": "",
           "template": "{{ .Env.MEASURE_PREVIOUS }}"
+        },
+        {
+          "alias": "trailing decoration",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#26c6da",
+          "trailing_diamond": "─╮",
+          "template": "<,></>"
         }
       ]
     },
@@ -143,7 +153,7 @@
           "foreground": "transparent",
           "background": "#26C6DA",
           "leading_diamond": "╰─",
-          "template": "<transparent,transparent> </>"
+          "template": "<,></>"
         }
       ],
       "newline": true
@@ -157,7 +167,7 @@
           "foreground": "transparent",
           "background": "#26C6DA",
           "trailing_diamond": "─╯",
-          "template": "<transparent,transparent> </>"
+          "template": "<,></>"
         }
       ]
     }
