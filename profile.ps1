@@ -13,7 +13,7 @@ if (!$isPSCore) {
     Import-Module Pscx -arg ~/.ps/.pscx.preferences.ps1
 }
 
-Import-Module Posh-Git
+Import-Module Posh-Git 2> $null
 Import-Module PowerShellHumanizer
 
 if ($isPSCore) {
