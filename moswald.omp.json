@@ -45,7 +45,8 @@
           "template": "[ADO]",
           "properties": {
             "include_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
+              "D:\\\\ado.*"
             ]
           }
         },
@@ -61,10 +62,12 @@
           "properties": {
             "folder_separator_icon": " ⁍ ",
             "include_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
+              "D:\\\\ado.*"
             ],
             "mapped_locations": {
               "D:\\m\\projects\\MS\\ado": "",
+              "D:\\ado": "",
               "D:\\m\\projects\\MS\\ado.configchange": "configchange"
             },
             "max_depth": 5,
@@ -82,12 +85,14 @@
           "template": "\ue5ff {{ .Path }}",
           "properties": {
             "exclude_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.*"
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
+              "D:\\\\ado.*"
             ],
             "folder_separator_icon": " ⁍ ",
             "mapped_locations": {
               "D:\\m\\projects\\MS": "~MS",
               "D:\\m\\projects\\MS\\ado": "[ADO]",
+              "D:\\ado": "[ADO]",
               "D:\\m\\projects\\SP": "~SP"
             },
             "max_depth": 5,
