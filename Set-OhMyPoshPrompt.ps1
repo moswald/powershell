@@ -1,5 +1,3 @@
-Import-Module oh-my-posh;
-
 function Set-PoshMeasurePrevious {
     $env:MEASURE_PREVIOUS = $(Measure-Previous)
 }
