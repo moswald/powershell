@@ -8,12 +8,6 @@
       "alignment": "left",
       "segments": [
         {
-          "type": "upgrade",
-          "style": "plain",
-          "foreground": "#111111",
-          "background": "#FFD664"
-        },
-        {
           "alias": "leading bubble",
           "type": "text",
           "style": "diamond",
@@ -21,6 +15,12 @@
           "background": "#26C6DA",
           "leading_diamond": "╭─",
           "template": "<,></>"
+        },
+        {
+          "type": "upgrade",
+          "style": "plain",
+          "foreground": "#111111",
+          "background": "#FFD664"
         },
         {
           "alias": "os icon",
