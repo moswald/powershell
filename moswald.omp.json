@@ -51,8 +51,40 @@
           "template": "[ADO]",
           "properties": {
             "include_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
-              "D:\\\\ado.*"
+              "D:\\\\ado",
+              "D:\\\\ado\\\\.*"
+            ]
+          }
+        },
+        {
+          "alias": "show [ADO 2] segment if in ADO2 subfolder",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#A5C25C",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "[ADO 2]",
+          "properties": {
+            "include_folders": [
+              "D:\\\\ado2",
+              "D:\\\\ado2\\\\.*"
+            ]
+          }
+        },
+        {
+          "alias": "show [ADO CC] segment if in ADO.ConfigChange subfolder",
+          "type": "text",
+          "style": "diamond",
+          "foreground": "transparent",
+          "background": "#A5C25C",
+          "leading_diamond": "",
+          "trailing_diamond": "",
+          "template": "[ADO CC]",
+          "properties": {
+            "include_folders": [
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.configchange",
+              "D:\\\\m\\\\projects\\\\MS\\\\ado.configchange\\\\.*"
             ]
           }
         },
@@ -72,9 +104,9 @@
               "D:\\\\ado.*"
             ],
             "mapped_locations": {
-              "D:\\m\\projects\\MS\\ado": "",
               "D:\\ado": "",
-              "D:\\m\\projects\\MS\\ado.configchange": "configchange"
+              "D:\\ado2": "",
+              "D:\\m\\projects\\MS\\ado.configchange": ""
             },
             "max_depth": 5,
             "style": "agnoster_short"
@@ -97,8 +129,6 @@
             "folder_separator_icon": " ⁍ ",
             "mapped_locations": {
               "D:\\m\\projects\\MS": "~MS",
-              "D:\\m\\projects\\MS\\ado": "[ADO]",
-              "D:\\ado": "[ADO]",
               "D:\\m\\projects\\SP": "~SP"
             },
             "max_depth": 5,
