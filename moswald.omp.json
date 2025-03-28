@@ -1,7 +1,5 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "version": 2,
-  "final_space": true,
   "blocks": [
     {
       "type": "prompt",
@@ -9,100 +7,90 @@
       "segments": [
         {
           "alias": "leading bubble",
-          "type": "text",
-          "style": "diamond",
+          "leading_diamond": "\u256d\u2500",
+          "template": "<,></>",
           "foreground": "transparent",
           "background": "#26C6DA",
-          "leading_diamond": "╭─",
-          "template": "<,></>"
+          "type": "text",
+          "style": "diamond"
         },
         {
-          "type": "upgrade",
-          "style": "plain",
           "foreground": "#111111",
-          "background": "#FFD664"
+          "background": "#FFD664",
+          "type": "upgrade",
+          "style": "plain"
         },
         {
           "alias": "os icon",
-          "type": "os",
-          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "template": "<#26C6DA,transparent> {{ if .WSL }}WSL at {{ end }}{{.Icon}}</>",
           "foreground": "transparent",
           "background": "#26C6DA",
-          "leading_diamond": "",
-          "template": "<#26C6DA,transparent> {{ if .WSL }}WSL at {{ end }}{{.Icon}}</>"
+          "type": "os",
+          "style": "diamond"
         },
         {
           "alias": "running as root?",
-          "type": "root",
-          "style": "diamond",
+          "trailing_diamond": "\ue0b4",
+          "template": "<#FC951E,transparent> \uf0e7 </>",
           "foreground": "transparent",
           "background": "#26C6DA",
-          "trailing_diamond": "",
-          "template": "<#FC951E,transparent>  </>"
+          "type": "root",
+          "style": "diamond"
+        },
+        {
+          "alias": "devbox indicator",
+          "template": "{{ if .Env.IsDevBox }}\ue0b6 DevBox \ue0b4{{ end }}",
+          "foreground": "#d83b01",
+          "background": "transparent",
+          "type": "text",
+          "style": "plain"
         },
         {
           "alias": "show [ADO] segment if in ADO subfolder",
-          "type": "text",
-          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "[ADO]",
           "foreground": "transparent",
           "background": "#A5C25C",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "[ADO]",
-          "properties": {
-            "include_folders": [
-              "D:\\\\ado",
-              "D:\\\\ado\\\\.*"
-            ]
-          }
+          "type": "text",
+          "style": "diamond",
+          "include_folders": [
+            "D:\\\\ado",
+            "D:\\\\ado\\\\.*"
+          ]
         },
         {
           "alias": "show [ADO 2] segment if in ADO2 subfolder",
-          "type": "text",
-          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "[ADO 2]",
           "foreground": "transparent",
           "background": "#A5C25C",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "[ADO 2]",
-          "properties": {
-            "include_folders": [
-              "D:\\\\ado2",
-              "D:\\\\ado2\\\\.*"
-            ]
-          }
+          "type": "text",
+          "style": "diamond",
+          "include_folders": [
+            "D:\\\\ado2",
+            "D:\\\\ado2\\\\.*"
+          ]
         },
         {
           "alias": "show [ADO CC] segment if in ADO.ConfigChange subfolder",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "[ADO CC]",
+          "foreground": "transparent",
+          "background": "#A5C25C",
           "type": "text",
           "style": "diamond",
-          "foreground": "transparent",
-          "background": "#A5C25C",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "[ADO CC]",
-          "properties": {
-            "include_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.configchange",
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.configchange\\\\.*"
-            ]
-          }
+          "include_folders": [
+            "D:\\\\m\\\\projects\\\\MS\\\\ado.configchange",
+            "D:\\\\m\\\\projects\\\\MS\\\\ado.configchange\\\\.*"
+          ]
         },
         {
-          "alias": "current path",
-          "type": "path",
-          "style": "diamond",
-          "foreground": "transparent",
-          "background": "#A5C25C",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "{{ .Path }}",
           "properties": {
-            "folder_separator_icon": " ⁍ ",
-            "include_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
-              "D:\\\\ado.*"
-            ],
+            "folder_separator_icon": " \u204d ",
             "mapped_locations": {
               "D:\\ado": "",
               "D:\\ado2": "",
@@ -110,50 +98,62 @@
             },
             "max_depth": 5,
             "style": "agnoster_short"
-          }
-        },
-        {
-          "alias": "special paths",
-          "type": "path",
-          "style": "diamond",
+          },
+          "alias": "current path",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ .Path }}",
           "foreground": "transparent",
           "background": "#A5C25C",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "\ue5ff {{ .Path }}",
+          "type": "path",
+          "style": "diamond",
+          "include_folders": [
+            "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
+            "D:\\\\ado.*"
+          ]
+        },
+        {
           "properties": {
-            "exclude_folders": [
-              "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
-              "D:\\\\ado.*"
-            ],
-            "folder_separator_icon": " ⁍ ",
+            "folder_separator_icon": " \u204d ",
             "mapped_locations": {
               "D:\\m\\projects\\MS": "~MS",
               "D:\\m\\projects\\SP": "~SP"
             },
             "max_depth": 5,
             "style": "agnoster_short"
-          }
+          },
+          "alias": "special paths",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "\ue5ff {{ .Path }}",
+          "foreground": "transparent",
+          "background": "#A5C25C",
+          "type": "path",
+          "style": "diamond",
+          "exclude_folders": [
+            "D:\\\\m\\\\projects\\\\MS\\\\ado.*",
+            "D:\\\\ado.*"
+          ]
         },
         {
           "alias": "git properties",
-          "type": "git",
-          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": " {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} ",
           "foreground": "transparent",
           "background": "#67D9F0",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": " {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} "
+          "type": "git",
+          "style": "diamond"
         },
         {
           "alias": "exit code if failed",
-          "type": "exit",
-          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ if gt .Code 0 }} \uf00d {{ .Meaning }} \uf00d {{ else }} \uf42e {{ end }}",
           "foreground": "#ffffff",
           "background": "#FA2573",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "{{ if gt .Code 0 }}  {{ .Meaning }}  {{ else }}  {{ end }}"
+          "type": "exit",
+          "style": "diamond"
         }
       ],
       "newline": true
@@ -164,22 +164,22 @@
       "segments": [
         {
           "alias": "right-aligned previous command timing",
-          "type": "text",
-          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ .Env.MEASURE_PREVIOUS }}",
           "foreground": "transparent",
           "background": "#008080",
-          "leading_diamond": "",
-          "trailing_diamond": "",
-          "template": "{{ .Env.MEASURE_PREVIOUS }}"
+          "type": "text",
+          "style": "diamond"
         },
         {
           "alias": "trailing decoration",
-          "type": "text",
-          "style": "diamond",
+          "trailing_diamond": "\u2500\u256e",
+          "template": "<,></>",
           "foreground": "transparent",
           "background": "#26c6da",
-          "trailing_diamond": "─╮",
-          "template": "<,></>"
+          "type": "text",
+          "style": "diamond"
         }
       ]
     },
@@ -189,12 +189,12 @@
       "segments": [
         {
           "alias": "prompt prefix",
-          "type": "text",
-          "style": "diamond",
+          "leading_diamond": "\u2570\u2500",
+          "template": "<,></>",
           "foreground": "transparent",
           "background": "#26C6DA",
-          "leading_diamond": "╰─",
-          "template": "<,></>"
+          "type": "text",
+          "style": "diamond"
         }
       ],
       "newline": true
@@ -203,14 +203,17 @@
       "type": "rprompt",
       "segments": [
         {
-          "type": "text",
-          "style": "diamond",
+          "trailing_diamond": "\u2500\u256f",
+          "template": "<,></>",
           "foreground": "transparent",
           "background": "#26C6DA",
-          "trailing_diamond": "─╯",
-          "template": "<,></>"
+          "type": "text",
+          "style": "diamond"
         }
       ]
     }
-  ]
+  ],
+  "version": 3,
+  "auto_upgrade": true,
+  "final_space": true
 }
