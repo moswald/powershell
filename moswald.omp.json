@@ -215,5 +215,10 @@
   ],
   "version": 3,
   "auto_upgrade": true,
-  "final_space": true
+  "final_space": true,
+  "upgrade": {
+    "interval": "24h",
+    "auto": true,
+    "source": "cdn"
+  }
 }
